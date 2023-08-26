@@ -47,6 +47,18 @@ public class Result {
 	   @ManyToOne
 	   @JoinColumn(name= "exam_id")
 	   private Exam examId;
+	   
+	   @Column(name="Tab_Switches")
+	   private int mpcount;
+
+	   
+	public int getMpcount() {
+		return mpcount;
+	}
+
+	public void setMpcount(int mpcount) {
+		this.mpcount = mpcount;
+	}
 
 	public int getId() {
 		return id;

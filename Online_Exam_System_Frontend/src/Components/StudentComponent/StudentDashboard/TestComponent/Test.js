@@ -4,6 +4,7 @@ import axios from "axios";
 
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import swal from 'sweetalert';
 
 import style from "../StudentDashboard.module.css";
 
@@ -15,11 +16,20 @@ function Test() {
     let { id } = useParams();
     let { category } = useParams();
 
-    const [allQuestions , setAllQuestions] = useState([]);
 
+    const [allQuestions , setAllQuestions] = useState([]);
+    
+// =============================================================================================
+    const [tab_change, setTabChange] = useState(0);
+// =============================================================================================
 
 
     useEffect(() => {
+
+// =============================================================================================
+        document.addEventListener("visibilitychange", handleVisibilityChange, false);
+// =============================================================================================
+
         async function getAllQuestions(){
             let value = await axios.get(`${baseUrl}/exam/${id}/question`);
             setAllQuestions(value.data);
@@ -102,7 +112,8 @@ function Test() {
          "sname": {"name":category},   // --  subject name
          "totalMarks": "5",
          "examId": {"id":id},         // exam id
-         "totalQuestion": "5"
+         "totalQuestion": "5",
+         "mpcount": tab_change
        };
 
        //console.log(data);
@@ -110,7 +121,19 @@ function Test() {
        await axios.post(`${baseUrl}/result` , data);
         history.push("/StudentDashboard/Result");
     }
-
+    // ===============================================================================================
+    function handleVisibilityChange() {
+        if (document.visibilityState == "hidden") {
+            // the page is hidden
+            setTabChange(tab_change+1);
+            swal("Changed Tab Detected", "Action has been Recorded", "error");
+            
+            
+        } else {
+          // the page is visible
+        }
+      }
+// ========================================================================================================
      let history = useHistory();
 
     return (
