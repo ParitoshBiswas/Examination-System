@@ -1,8 +1,5 @@
 package com.example.Exam;
 
-
-
-
 import java.util.List;
 
 import com.example.question.Question;

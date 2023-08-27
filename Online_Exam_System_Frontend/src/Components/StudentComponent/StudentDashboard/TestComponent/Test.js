@@ -1,3 +1,5 @@
+
+
 import axios from "axios";
 
 import React, { useState, useEffect } from "react";
@@ -15,24 +17,26 @@ function Test() {
 
 
     const [allQuestions, setAllQuestions] = useState([]);
+
+    // =============================================================================================
     const [tab_change, setTabChange] = useState(0);
 
-
     useEffect(() => {
-
         document.addEventListener("visibilitychange", handleVisibilityChange, false);
+
 
         document.addEventListener('contextmenu', function (e) {
             e.preventDefault();
         }, false);
 
+        // =============================================================================================
+
         async function getAllQuestions() {
             let value = await axios.get(`${baseUrl}/exam/${id}/question`);
             setAllQuestions(value.data);
+            
         }
-
         getAllQuestions();
-
         return function cleanup() {
             document.removeEventListener("visibilitychange", handleVisibilityChange);
             document.removeEventListener('contextmenu', function (e) {
@@ -40,6 +44,7 @@ function Test() {
             }, false);
         }
     }, [id, tab_change]);
+
 
     const [answer, setAnswer] = useState({
         answer1: "",
@@ -57,6 +62,7 @@ function Test() {
             ...answer,
             [e.target.name]: e.target.value
         });
+
     }
 
     let count = 0;
@@ -76,6 +82,7 @@ function Test() {
         if (correctAnswer[3] === answer.answer4) score++;
         if (correctAnswer[4] === answer.answer5) score++;
 
+        // console.log(score);
 
         if (score >= 3) status = "Pass";
         else status = "Fail";
@@ -84,7 +91,7 @@ function Test() {
         var date = new Date();
         var d = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
         var t = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
+        //    var abc =10;
         let data = {
             "status": status,
             "score": score,
@@ -97,7 +104,6 @@ function Test() {
             "mpcount": tab_change
         };
 
-
         await axios.post(`${baseUrl}/result`, data);
         history.push("/StudentDashboard/Result");
     }
@@ -105,19 +111,26 @@ function Test() {
 
     function handleVisibilityChange() {
         if (document.visibilityState == "hidden") {
-
             // the page is hidden
+
             setTabChange(tab_change + 1);
+
+
+
             swal("Changed Tab Detected", "Action has been Recorded", "error");
+
 
         }
 
         if (tab_change == 3) {
-            submitTest();
-        }
 
+
+            submitTest();
+
+        }
         else {
             // the page is visible
+
         }
     }
 
@@ -125,6 +138,8 @@ function Test() {
 
     return (
         <>
+      
+            
             <div id={style.displayBoxQuestionHeadingBox}>
                 <h1>Answer all the questions</h1>
             </div>
@@ -164,6 +179,7 @@ function Test() {
 
                 })
             }
+         
             <div id={style.submitExam}><button onClick={submitTest}>Submit Exam</button></div>
         </>
     );
