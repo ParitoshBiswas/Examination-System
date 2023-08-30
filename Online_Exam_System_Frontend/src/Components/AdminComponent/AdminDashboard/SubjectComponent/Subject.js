@@ -56,8 +56,8 @@ function Subject() {
 
 
     async function handleAddNewSubject() {
-        var regex = /^(\a+\S+)$/;
-        if (regex.test(subject)) {
+        // var regex = /^([a-zA-Z]+)$/;
+        if (subject.name !== "") {
             await axios.post(`${baseUrl}/subject`, subject);
             setStatus(true);
         } else {
